@@ -37,4 +37,20 @@ describe("users-model", () => {
     const user = await Users.findById(100);
     expect(user).toBeUndefined();
   });
+
+  describe("remove", () => {
+    it("should return nothing if user is removed", async () => {
+      //first add a user
+      let user = await Users.add({ username: "test", password: "test" });
+      expect(user.username).toBe("test");
+      //then find all users
+      let users = await Users.find();
+      expect(users.length).toBe(1);
+      //then remove
+      user = await Users.remove(user.id);
+      //expect length of list to be 0 once removed
+      users = await Users.find();
+      expect(users.length).toBe(0);
+    });
+  });
 });
