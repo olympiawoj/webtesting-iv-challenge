@@ -32,6 +32,14 @@ describe("auth-router", () => {
         .send(newUser);
       expect(response.status).toBe(201);
     });
+
+    it("returns status 401 if username or password is missing", async () => {
+      const newUser = { username: "test" };
+      let response = await request(server)
+        .post("/api/auth/register")
+        .send(newUser);
+      expect(response.status).toBe(401);
+    });
   });
 
   describe("DELETE /api/auth/users/:id", () => {

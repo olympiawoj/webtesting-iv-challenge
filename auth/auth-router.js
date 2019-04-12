@@ -5,6 +5,12 @@ const Users = require("../users/users-model.js");
 router.post("/register", async (req, res) => {
   let user = req.body;
   console.log(user);
+
+  if (!user.username || !user.password) {
+    return res
+      .status(401)
+      .json({ message: "Submit both username and password when registering" });
+  }
   try {
     const saved = await Users.add(user);
     res.status(201).json(saved);
@@ -28,7 +34,7 @@ router.get("/users", async (req, res) => {
 //DELETE USER
 router.delete("/users/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
   try {
     const deletedUser = await Users.remove(id);
     if (deletedUser) {
