@@ -33,4 +33,19 @@ describe("auth-router", () => {
       expect(response.status).toBe(201);
     });
   });
+
+  describe("DELETE /api/auth/users/:id", () => {
+    it("should return status 204", async () => {
+      //first insert
+      const newUser = { username: "test", password: "test" };
+      let response = await request(server)
+        .post("/api/auth/register")
+        .send(newUser);
+      //then delete
+      response = await request(server).delete("/api/auth/users/1");
+      expect(response.status).toBe(204);
+      response = await request(server).get("/api/auth/users");
+      expect(response.body).toHaveLength(0);
+    });
+  });
 });
