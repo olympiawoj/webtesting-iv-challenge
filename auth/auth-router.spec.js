@@ -1,16 +1,26 @@
 const request = require("supertest");
-
+const db = require("../database/dbConfig.js");
 const server = require("../api/server.js");
+// const authRouter = require("./auth-router");
 
-describe("server.js", () => {
-  describe("sanity check", async () => {
-    const res = await request(server).get("/");
-    expect(res.status).toBe(200);
+describe("auth-router", () => {
+  beforeEach(async () => {
+    await db("users").truncate();
   });
-  //   describe("GET /users", () => {
-  //     it("should respond with 200 OK", async (req, res) => {
-  //       const response = await request(server).get("/auth/api/users");
-  //       expect(response.status).toBe(200);
-  //     });
-  //   });
+
+  describe("GET /users", () => {
+    it("should return status 200", async () => {
+      let res = await request(server).get("/api/auth/users");
+      expect(res.status).toBe(200);
+    });
+
+    it("should return array of all users", async () => {
+      let res = await request(server).get("/api/auth/users");
+      expect(res.body).toHaveLength(0);
+
+      await db("users").insert({ username: "test1", password: "test1" });
+      res = await request(server).get("/api/auth/users");
+      expect(res.body).toHaveLength(1);
+    });
+  });
 });

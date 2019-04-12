@@ -9,7 +9,8 @@ server.use(express.json());
 //implement routers
 server.use("/api/auth/", authRouter);
 server.get("/", (req, res) => {
-  res.send("testing the server and its workin aight");
+  res.status(200);
+  res.json({ message: "testing the server and its workin aight" });
 });
 
 module.exports = server;
