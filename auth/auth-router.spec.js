@@ -23,4 +23,14 @@ describe("auth-router", () => {
       expect(res.body).toHaveLength(1);
     });
   });
+
+  describe("POST /api/auth/register", () => {
+    it("should return status 201", async () => {
+      const newUser = { username: "test1", password: "test1" };
+      let response = await request(server)
+        .post("/api/auth/register")
+        .send(newUser);
+      expect(response.status).toBe(201);
+    });
+  });
 });
